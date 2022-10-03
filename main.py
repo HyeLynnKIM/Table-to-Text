@@ -36,7 +36,7 @@ def is_number_column(table_data: list, col_idx: int): #Column 중에 num이 있�
         column_content.append(cont)
     return is_number, column_content
 
-class Table_template():
+class Table_template:
     def __init__(self, table_name, table):
         self.src_table = table
         self.src_Table_name = table_name
@@ -88,7 +88,8 @@ class Table_template():
                 total += float(cont)
             text += f'and Total of {cont_col_name} is {total}.'
             return text
-        else: return 'No numerical'
+        else:
+            return 'No numerical'
 
     def make_text_3(self, table_name, basic_col, cont_col_index, content_col):  ## Only num column _ diff
         basic_col = list(basic_col.values())[0]
@@ -97,7 +98,7 @@ class Table_template():
             text = f'In {table_name}, {basic_col[0]}\'s {cont_col_name} is {content_col[0]},'
             for index in range(1, len(basic_col)-1):
                 text += f' {basic_col[0]} is as different as {basic_col[index]} and {abs(float(content_col[0])-float(content_col[index]))},'
-            text += f'{basic_col[-1]} is as different as {abs(float(content_col[0])-float(content_col[-1]))}.'
+            text += f'{basic_col[0]} is as different as {basic_col[-1]} and {abs(float(content_col[0])-float(content_col[-1]))}.'
             return text
         else:
             return 'No numerical'
@@ -112,12 +113,14 @@ class Table_template():
                 total += float(cont)
             text += f'So Average of {cont_col_name} is {total/len(basic_col)} on this table.'
             return text
-        else: return 'No numerical'
+        else:
+            return 'No numerical'
 
     def make_text_5(self, table_name, basic_col, cont_col_index, content_col): # all column - describe basic column
         cont_col_name = self.src_table[0][cont_col_index]
         text = 'First, There is '
         cont_col_2, cont_2, cont_col_name_2 = cont_col_index, '', ''
+
         while(cont_col_2 == cont_col_index):
             cont_col_2, cont_2 = self.select_random_column()
 
@@ -126,8 +129,21 @@ class Table_template():
         for index, (cont, cont2) in enumerate(zip(content_col, cont_2)):
             text += f'case where {cont_col_name} is {cont} and {cont_col_name_2} is {cont2}, '
             if index == len(content_col)-1:
-                text += f'lastly person whose {cont_col_name} is {cont} and {cont_col_name_2} is {cont2} on this table.'
+                text += f'and lastly case that {cont_col_name} is {cont} and {cont_col_name_2} is {cont2} on this table.'
         return text
+
+    def make_text_6(self, table_name, basic_col, cont_col_index, content_col): ## Only num column _ portion
+        basic_col = list(basic_col.values())[0]
+        if cont_col_index in list(self.number_column.keys()):
+            cont_col_name = self.src_table[0][cont_col_index]
+            text = f'In {table_name}, {basic_col[0]}\'s {cont_col_name} is {content_col[0]},'
+            for index in range(1, len(basic_col) - 1):
+                text += f' {basic_col[0]} is {float(content_col[0])/float(content_col[index])} times {basic_col[index]},'
+            text += f'{basic_col[0]} is {float(content_col[0]) - float(content_col[-1])} times {basic_col[-1]}.'
+            return text
+        else:
+            return 'No numerical'
+
 
 if "__main__" == __name__:
     Table_name = 'BG Karlsruhe'
@@ -155,5 +171,7 @@ if "__main__" == __name__:
     print(Table_Maker.make_text_3(Table_Maker.src_Table_name, Table_Maker.basic_column, idx, cont))
     ## 4
     print(Table_Maker.make_text_4(Table_Maker.src_Table_name, Table_Maker.basic_column, idx, cont))
-    ##5
+    ## 5
     print(Table_Maker.make_text_5(Table_Maker.src_Table_name, Table_Maker.basic_column, idx, cont))
+    ## 6
+    print(Table_Maker.make_text_6(Table_Maker.src_Table_name, Table_Maker.basic_column, idx, cont))
