@@ -144,13 +144,29 @@ class Table_template:
         else:
             return 'No numerical'
 
+    def make_text_7(self, table_name, basic_col, cont_col_index, content_col):
+        if sorted(list(set(content_col)))!=sorted(content_col):
+            text = f'In case of column {self.src_table[0][cont_col_index]} in the {table_name} table'
+            selcect_value = random.choice(content_col)
+            count = {}
+            for index in range(len(content_col)):
+                try:
+                    count[content_col[index]] += 1
+                except:
+                    count[content_col[index]] = 1
+            for (cont, cnt) in count.items():
+                text += f', there is {cnt} of {cont}'
+            text += '.'
+            return text
+        else:
+            return "No Duplicate"
 
 if "__main__" == __name__:
     Table_name = 'BG Karlsruhe'
     Table_1 = list() # 수에 단위 붙은 경우는 나중에 따로 구현해야함요,, 흑ㅎㄱ
     Table_1.append(['number', 'name', 'Position', 'Birthday', 'Size', 'Weight', 'Last Team'])
     Table_1.append(['5', 'Tom Lipke', 'Guard/ Forward', '12.04.1986', '1,96', '98', 'Bremen Roosters'])
-    Table_1.append(['6', 'Muamer Taletovic', 'Guard', '02.04.1976', '1,87', '90', 'SSC Karlsruhe'])
+    Table_1.append(['6', 'Muamer Taletovic', 'Guard', '02.04.1976', '1,87', '98', 'SSC Karlsruhe'])
     Table_1.append(['7', 'David Watson', 'Forward', '16.09.1988', '1,84', '100', 'Hertener Löwen'])
     Table_1.append(['8', 'Brandon Gary', 'Center', '26.01.1983', '2,03', '110', 'Aschersleben Tiger'])
     Table_1.append(['9', 'Theodis Tarver', 'Guard', '09.07.1984', '2,06', '108', 'Chemosvit Svit'])
@@ -175,3 +191,5 @@ if "__main__" == __name__:
     print(Table_Maker.make_text_5(Table_Maker.src_Table_name, Table_Maker.basic_column, idx, cont))
     ## 6
     print(Table_Maker.make_text_6(Table_Maker.src_Table_name, Table_Maker.basic_column, idx, cont))
+    ## 7
+    print(Table_Maker.make_text_7(Table_Maker.src_Table_name, Table_Maker.basic_column, idx, cont))
